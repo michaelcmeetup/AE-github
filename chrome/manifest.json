@@ -1,0 +1,15 @@
+{
+  "name": "GitHub Scrum Board",
+  "version": "0.0.1",
+  "description": "Better GitHub issues for use with Personal Access Token (no third-party API)",
+  "content_scripts": [{
+    "css":     [ "design/scrumboard.css" ],
+    "js":      [ "source/scrumboard.js" ],
+    "matches": [ "https://github.com/*/*/issues" ]
+  }],
+  "permissions": [
+    "storage",
+    "https://github.com/*/*/issues"
+  ],
+  "manifest_version": 2
+}
