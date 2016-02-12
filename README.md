@@ -17,9 +17,11 @@ the GitHub API.
 
 ## Features
 
+- Only overrides the Issues overview, everything else stays the same.
+- Uses GitHub labels, so everything is properly integrated.
 - Uses GitHub API, so everything stays on GitHub.
 - Drag and Drop allows Trello / Jira and alike behaviour.
-- No third-party service is used, everything stays on GitHub.
+- No third-party service is used, so everything stays on GitHub.
 - Simple and minimalistic, blazing-fast.
 - Libre Software, no nagging popups, no subscriptions or other crap.
 
@@ -57,8 +59,10 @@ in Developer Mode.
 - Download the [master archive]() and unzip it somewhere.
 - Open Chrome / Chromium / Opera and go to `chrome://extensions`.
 - Make sure `[ ✓ ] Developer mode` is active.
-- Click `Load unpacked extension` and select the `GitHub ScrumBoard / chrome` folder.
-- That's it, done.
+- Click `Load unpacked extension` and select the `AE-github-master/chrome` folder.
+- Visit your project's Issues page. Click Reload (or use `[Ctrl] + [R]`).
+- Generate a Token and paste it to the input field.
+- That's it, you're done.
 
 
 ## License
@@ -77,5 +81,4 @@ Feel free to fork this project, Pull-Requests are always welcome!
 Here's a short list what might don't work and needs some tweaks:
 
 - The wrapper with the token input field shall be hidden and visible only if `\_get\_token()` fails.
-- Might make sense to get rid of the dropzones and use the boards directly. But DOM API will be more crappy because of event.target shit.
 

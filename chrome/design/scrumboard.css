@@ -1,12 +1,39 @@
 
-div#howto {
-	display: block;
-	text-align: center;
+/*
+ * SHITTY GITHUB STYLESHEET
+ *
+ * These guys are real bootstrap pros -_-
+ *
+ */
+
+div.main-content div.pagehead {
+	margin: 0px;
 }
 
-div#howto input,
-div#howto button {
-	margin: 1em;
+div.main-content div.pagehead nav {
+	display: inline-block;
+	vertical-align: bottom;
+}
+
+
+
+/*
+ * SCRUMBOARD STYLES
+ */
+
+div#scrumboard-token {
+	display: inline-block;
+	text-align: center;
+	float: right;
+}
+
+div#scrumboard-token input {
+	margin: 0px 1em;
+	padding: 0px;
+	width: 0px 8px;
+	height: 26px;
+	min-height: initial;
+	line-height: 26px;
 }
 
 div#scrumboard {

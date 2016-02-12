@@ -49,12 +49,53 @@
 	}
 
 
+	var _cache = {};
+
 	var _get = function(id) {
-		return localStorage.getItem('github-' + id);
+
+		var key = 'github-scrumboard-' + id;
+
+		if (_cache[id] !== undefined) {
+			return _cache[id];
+		}
+
+		if (typeof chrome !== 'undefined') {
+
+			chrome.storage.local.get(key, function(tmp) {
+				_cache[id] = tmp[key];
+			});
+
+			return null;
+
+		} else {
+
+			return localStorage.getItem(key);
+
+		}
+
 	};
 
 	var _set = function(id, value) {
-		localStorage.setItem('github-' + id, value);
+
+		var key = 'github-scrumboard-' + id;
+
+		if (typeof chrome !== 'undefined') {
+
+			_cache[id] = value;
+
+			var tmp  = {};
+			tmp[key] = value;
+
+			return chrome.storage.local.set(tmp);
+
+		} else {
+
+			_cache[id] = value;
+
+			return localStorage.setItem(key, value);
+
+		}
+
 	};
 
 
@@ -299,6 +340,38 @@
 
 	};
 
+	var _update_height = function() {
+
+		var height  = global.innerHeight;
+		var element = null;
+
+
+		element = document.querySelector('#howto');
+		if (element !== null) {
+			height -= parseInt(global.getComputedStyle(element).getPropertyValue('margin-top')    || '0', 10);
+			height -= parseInt(global.getComputedStyle(element).getPropertyValue('height')        || '0', 10);
+			height -= parseInt(global.getComputedStyle(element).getPropertyValue('margin-bottom') || '0', 10);
+		}
+
+		element = document.querySelector('.pagehead');
+		if (element !== null) {
+			height -= parseInt(global.getComputedStyle(element).getPropertyValue('margin-top')    || '0', 10);
+			height -= parseInt(global.getComputedStyle(element).getPropertyValue('height')        || '0', 10);
+			height -= parseInt(global.getComputedStyle(element).getPropertyValue('margin-bottom') || '0', 10);
+		}
+
+		element = document.querySelector('.header');
+		if (element !== null) {
+			height -= parseInt(global.getComputedStyle(element).getPropertyValue('margin-top')    || '0', 10);
+			height -= parseInt(global.getComputedStyle(element).getPropertyValue('height')        || '0', 10);
+			height -= parseInt(global.getComputedStyle(element).getPropertyValue('margin-bottom') || '0', 10);
+		}
+
+
+		_BOARD.style.height = height + 'px';
+
+	};
+
 	var _update = function() {
 
 		_BOARDS.backlog     = document.querySelector('div.scrumboard-cardzone[data-label="backlog"]');
@@ -306,6 +379,8 @@
 		_BOARDS.in_progress = document.querySelector('div.scrumboard-cardzone[data-label="in-progress"]');
 		_BOARDS.in_testing  = document.querySelector('div.scrumboard-cardzone[data-label="in-testing"]');
 		_BOARDS.done        = document.querySelector('div.scrumboard-cardzone[data-label="done"]');
+
+		_update_height();
 
 
 		_api_issues('open', function(data) {
@@ -508,18 +583,20 @@
 	 */
 
 	var _BOARD = document.createElement('div');
-	var _HOWTO = document.createElement('div');
+	var _TOKEN = document.createElement('div');
 
 
-	var main   = document.querySelector('div.main-content div.repository-content');
-	if (main !== null) {
+	var main = document.querySelector('div.main-content div.repository-content');
+	var menu = document.querySelector('div.main-content div.pagehead div.container:nth-of-type(2)');
+
+	if (main !== null && menu !== null) {
 
 		var tmp1 = '';
 		var tmp2 = '';
 
 
-		tmp1 += '<input type="text" placeholder="Paste Personal Access Token here.">';
-		tmp1 += '<a href="https://github.com/settings/tokens/new" target="_blank">Generate Token</a>';
+		tmp1 += '<input type="text" placeholder="Paste Token here" title="Paste Token here">';
+		tmp1 += '<a class="btn btn-sm" title="Generate Token for GitHub ScrumBoard extension" href="https://github.com/settings/tokens/new" target="_blank">New Token</a>';
 
 
 		tmp2 += '<div id="scrumboard-backlog">';
@@ -554,22 +631,27 @@
 
 
 
-
-		_HOWTO.setAttribute('id', 'howto');
+		_TOKEN.setAttribute('id', 'scrumboard-token');
 		_BOARD.setAttribute('id', 'scrumboard');
 
-		_HOWTO.innerHTML = tmp1;
+		_TOKEN.innerHTML = tmp1;
 		_BOARD.innerHTML = tmp2;
 
-		main.innerHTML   = '';
-		main.parentNode.insertBefore(_HOWTO, main);
+		menu.appendChild(_TOKEN);
+
+		main.innerHTML = '';
 		main.parentNode.insertBefore(_BOARD, main);
+
+
+
+		_get('init');
+		_get('token');
 
 
 
 		setTimeout(function() {
 
-			var input = _HOWTO.querySelector('input');
+			var input = _TOKEN.querySelector('input');
 			if (input !== null) {
 
 				input.value    = _get('token');
@@ -596,7 +678,7 @@
 
 			}
 
-		}, 0);
+		}, 100);
 
 
 		setTimeout(function() {
