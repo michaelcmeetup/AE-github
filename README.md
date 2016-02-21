@@ -72,6 +72,15 @@ via [Ctrl] + [R] or the Reload button.
 
 
 
+## Usage
+
+The usage is pretty simple. Just drag and drop an issue card onto
+the wanted column.
+
+![Drag and Drop Issue](./guide/drag-issue.gif)
+
+
+
 ## License
 
 GitHub ScrumBoard is (c) 2016 Artificial-Engineering and released under MIT / Expat license.
