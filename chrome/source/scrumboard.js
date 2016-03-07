@@ -206,6 +206,7 @@
 		var url = 'https://api.github.com/repos/' + _ORGA + '/' + _REPO + '/issues?per_page=254&state=' + state;
 
 		xhr.open('GET', url, true);
+		xhr.setRequestHeader('Authorization', 'token ' + _get('token'));
 
 		xhr.onload = function() {
 
